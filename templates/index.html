@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+
+     <script type="text/javascript" src="static/bootstrap/js/jquery.js"></script>
+	 <!-- 引入 Bootstrap -->
+	 <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	 <link href="static/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+	 <link href="static/bootstrap/css/test.css" rel="stylesheet" type="text/css">
+     <script type="text/javascript" src="static/bootstrap/js/jquery.dataTables.js"></script>
+     <script type="text/javascript" src="static/bootstrap/js/dataTables.bootstrap.js"></script>
+
+    <title>靶场平台</title>
+
+</head>
+<style>
+
+</style>
+
+
+<!-- bootstrap 特性容器 -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">靶场</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://{{ip}}:{{webport}}/about">关于</a></li>
+          </ul>
+            <!--
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+          -->
+        </div>
+      </div>
+    </nav>
+<div class="container-fluid">
+	<div class="col-md-6">
+
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#example').DataTable({
+     "language": {
+                        "lengthMenu": "每页 _MENU_ 条记录",
+                        "zeroRecords": "没有找到记录",
+                        "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                        "infoEmpty": "无记录",
+                        "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                        "paginate": {
+                            "sFirst": "第一页",
+                            "sLast": "最后一页",
+                            "sNext": "下一页",
+                            "sPrevious": "上一页"
+                        }
+                    },
+       "pagingType":   "full_numbers"
+    });
+} );
+
+</script>
+
+ <div class="container">
+         <table id="example" class="table table-striped" cellpadding="0" cellspacing="0" border="0" >
+            <thead>
+              <tr>
+                <th>漏洞级别</th>
+                <th>漏洞描述</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for k in data %}
+              <tr>
+				  <td>{{k.level.decode("utf-8") }}</td>
+				  <td>{{k.name.decode("utf-8") }}</td>
+				  <td>
+					  <button type="button" class="btn btn-sm btn-primary" onclick="window.location.href='/start?q={{ k.dirname }}'">启动</button>
+				  </td>
+              </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+</div>
+
+ </html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script type="text/javascript">
+    function test(data){$("#remaintime").text(data+"分钟后漏洞环境关闭")}
+    setInterval(function(){$.ajax({
+                    type: "GET",
+                    url: "/remaintime?vulndir={{vulndir}}",
+                    //jsonpCallback: "test",
+                    }).done(test)},30000);
+</script>
+<script type="text/javascript" src="static/jquery.min.js" rel="stylesheet"></script>
+
+<xmp theme="united" style="display:none;">
+1. 下载并安装 `BugScan SDK`
+
+ 详见 [BugScan 插件开发文档 - 环境配置](http://doc.bugscan.net/chapter1/1-1.html)
+
+2. 修改 `poc.py` 中地址为容器地址
+
+ ```
+if __name__ == '__main__':
+    from dummy import *
+    audit(assign(fingerprint.wordpress, "http://localhost:8000")[1])
+
+ ```
+
+3. 修改 poc 中 `Cookie`(如果开启了 Guest 则不需要修改，默认开启)
+
+4. 运行 `poc.py`
+
+ ```
+$ python poc.py
+ ```
+$ python poc.py
+ ```
+</xmp>
+<script src="http://127.0.0.1:9999/static/strapdown/strapdown.js"></script>
+
+</body>
+</html>
