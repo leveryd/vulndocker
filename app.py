@@ -1,15 +1,9 @@
 #-*- coding: UTF-8 -*-
 from flask import Flask,render_template,session,redirect,url_for,flash,request,abort,Response
-#from flaskext.markdown import Markdown
-from markdown import markdown
-from markdown import markdownFromFile
 from flask.ext.session import Session
 import socket
 import fcntl
 import struct
-from misaka import HtmlRenderer,Markdown
-from StringIO import StringIO
-
 import os,commands
 import docker
 import redis
@@ -27,7 +21,6 @@ app.config['SESSION_TYPE'] = 'filesystem'
 
 app.config.from_object(__name__)
 Session(app)
-Markdown(app)
 
 
 client = docker.from_env()
