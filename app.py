@@ -16,8 +16,9 @@ import redis
 import random
 from jinja2 import Template
 
-ip = "vuln.com"
+ip = "10.0.44.141"
 webport = 8888
+ttyport = 9999
 app = Flask(__name__)
 app.debug = 1
 app.config['SECRET_KEY'] = 'hard to guess string'
@@ -60,16 +61,6 @@ def index():
 			traceback.print_exc()
 	return render_template("index.html",data=ret,webport=webport,ip=ip)
 
-#漏洞详情页面
-@app.route('/detail',methods=['GET','POST'])
-def detail():
-	try:
-		q = request.args.get('q', None)
-		with open("vuln/" + q + "/README.md", "r") as f:
-			temp = eval(f.read())
-			return render_template("detail.html",details=temp['desc'],dirname=q,webport=webport)
-	except Exception as e:
-		print(e)
 #执行命令,返回命令结果
 def execcontainer(containerid,cmd):
 	content = ""
@@ -115,6 +106,7 @@ def start():
 				container_remaintime = 60
 				containerid = container.id
 		port = getport(containerid)
+		args['ttyport'] = ttyport
 		args["port"] = port
 		args["ip"] = ip
 		args["remoteip"] = remoteip
@@ -124,17 +116,7 @@ def start():
 		args["container_remaintime"] = container_remaintime
 		template = Template(desc.decode("utf-8"))
 		desc = template.render(**args)
-		#desc = markdown(desc,output_format='html',extensions=['markdown.extensions.nl2br','markdown.extensions.extra'])
-		rndr = HtmlRenderer()
-		md = Markdown(rndr)
-		desc = md(desc)
 		args["desc"] = desc
-		output = StringIO("rw")
-		markdownFromFile("templates/footer.html", output=output)
-		extra_information = output.getvalue().decode('utf-8')
-		extra_information_template = Template(extra_information)
-		extra_information = extra_information_template.render(**args)
-		args["extra_information"] = extra_information
 		return render_template("run.html",**args)
 	except Exception as e:
 		import traceback
