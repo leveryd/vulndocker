@@ -27,3 +27,7 @@
 > 安装docker服务
 
 > 一些漏洞环境用到数据库的 `docker run -p 3306:3306 -d -e MYSQL_DATABASE=test -e MYSQL_USER=fscan -e MYSQL_PASSWORD=fscan123 -e MYSQL_ROOT_PASSWORD=fscan123 mysql`
+
+
+额外的
+> highlight.js  语法高亮 http://www.gonjay.com/blog/2014/07/11/markdownde-chun-qian-duan-jie-jue-fang-an/
