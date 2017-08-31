@@ -1,36 +1,24 @@
 <!DOCTYPE html>
 <html>
-<body>
-<link rel="stylesheet" href="static/github-markdown-css/github-markdown.css">
-<style>
-	.markdown-body {
-		box-sizing: border-box;
-		min-width: 200px;
-		max-width: 980px;
-		margin: 0 auto;
-		padding: 45px;
-	}
+<body style="display:none">
 
-	@media (max-width: 767px) {
-		.markdown-body {
-			padding: 15px;
-		}
-	}
-</style>
-<script type="text/javascript">
-    function test(data){$("#remaintime").text(data+"分钟后漏洞环境关闭")}
-    setInterval(function(){$.ajax({
-                    type: "GET",
-                    url: "/remaintime?vulndir={{vulndir}}",
-                    //jsonpCallback: "test",
-                    }).done(test)},30000);
-</script>
 <script type="text/javascript" src="static/jquery.min.js" rel="stylesheet"></script>
 
 <!--<iframe src="http://127.0.0.1:9999/terminal/{{containerid}}" width="70%" height="50%"></iframe>-->
-<div class="markdown-body" id="content">
+<xmp theme="united" style="display:none">
 {{desc|safe}}
-{{extra_information|safe}}
+
+-----------------
+[在线控制台](http://{{ip}}:{{ttyport}}/terminal/{{containerid}})
+
+<p id="remaintime">{{container_remaintime}}分钟后漏洞环境关闭</p>
+
+服务地址:`{{ip}}:{{port[0]}}`
+
+[注销本环境](http://{{ip}}:{{webport}}/shutdown?q={{vulndir}})
+</xmp>
+
+<script type="text/javascript" src="static/strapdown/strapdown.js" rel="stylesheet"></script>
 </body>
-</div>
+
 </html>

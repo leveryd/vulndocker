@@ -396,6 +396,7 @@ var PR=win['PR']={'createSimpleLexer':createSimpleLexer,'registerLangHandler':re
   var newNode = document.createElement('div');
   newNode.className = 'container';
   newNode.id = 'content';
+  //newNode.style.display = 'none';
   document.body.replaceChild(newNode, markdownEl);
 
   // Insert navbar if there's none
@@ -436,7 +437,8 @@ var PR=win['PR']={'createSimpleLexer':createSimpleLexer,'registerLangHandler':re
   }
 
   // All done - show body
-  document.body.style.display = '';
+  setInterval('document.body.style.display = "";',100);
+  //document.body.style.display = "";
 
 })(window, document);
 

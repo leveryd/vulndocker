@@ -1,0 +1,6 @@
+<hr />
+<p><a href="http://{{ip}}:9999/terminal/{{containerid}}">在线控制台</a></p>
+<p id="remaintime">{{container_remaintime}}分钟后漏洞环境关闭</p>
+
+<p>服务地址:<code>{{ip}}:{{port[0]}}</code></p>
+<p><a href="http://{{ip}}:{{webport}}/shutdown?q={{vulndir}}">注销本环境</a></p>
