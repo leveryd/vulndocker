@@ -13,6 +13,7 @@ from jinja2 import Template
 ip = "127.0.0.1"
 webport = 8888
 ttyport = 9999
+CURRENT_DIR = os.getcwd()
 app = Flask(__name__)
 app.debug = 1
 app.config['SECRET_KEY'] = 'hard to guess string'
@@ -95,6 +96,13 @@ def start():
 				config.pop("level")
 				config.pop("desc")
 				config['detach'] = True
+				if "volumes" in config.keys():
+					temp = {}
+					for key in config["volumes"]:
+						newkey = key.replace("#CURRENT_DIR#",CURRENT_DIR + "/vuln/" + q)
+						temp[newkey] = config["volumes"][key]
+					config.pop("volumes")
+					config["volumes"] = temp
 				#容器依赖其他容器时,先启动其他容器,然后link上去
 				#当前目录下应该有依赖容器的启动配置,目前只支持依赖一个容器
 				if "depends" in config.keys():

@@ -3,6 +3,6 @@
     "image":"vuln/heartbleed",
     "type":"信息泄露",
     "level":"高",
-    "volumes":{"/Users/4nim4l/fddproject/vulndocker/vuln/heartbleed/www":{"bind": "/var/www/html", "mode": "rw"},"/Users/4nim4l/fddproject/vulndocker/vuln/heartbleed/conf":{"bind":"/etc/nginx","mode":"rw"}},
+    "volumes":{"#CURRENT_DIR#/www":{"bind": "/var/www/html", "mode": "rw"},"#CURRENT_DIR#/conf":{"bind":"/etc/nginx","mode":"rw"}},
     "ports":{"80/tcp":"","443/tcp":""},
 }
