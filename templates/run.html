@@ -3,6 +3,14 @@
 <body style="display:none">
 
 <script type="text/javascript" src="static/jquery.min.js" rel="stylesheet"></script>
+<script type="text/javascript">
+    function test(data){$("#remaintime").text(data+"分钟后漏洞环境关闭")}
+    setInterval(function(){$.ajax({
+                    type: "GET",
+                    url: "/remaintime?vulndir={{vulndir}}",
+                    //jsonpCallback: "test",
+                    }).done(test)},30000);
+</script>
 
 <!--<iframe src="http://127.0.0.1:9999/terminal/{{containerid}}" width="70%" height="50%"></iframe>-->
 <xmp theme="united" style="display:none">

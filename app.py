@@ -10,7 +10,7 @@ import redis
 import random
 from jinja2 import Template
 
-ip = "10.0.44.141"
+ip = "127.0.0.1"
 webport = 8888
 ttyport = 9999
 app = Flask(__name__)
@@ -22,8 +22,8 @@ app.config['SESSION_TYPE'] = 'filesystem'
 app.config.from_object(__name__)
 Session(app)
 
-
-client = docker.from_env()
+# docker在ubuntu上部署时,没有auto参数,出现client和server版本不一致的问题
+client = docker.from_env(version = "auto")
 
 def get_ip_address(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -90,10 +90,23 @@ def start():
 			container_remaintime = container_remaintime/60/1000
 		else:
 			with open("vuln/" + q + "/README.md", "r") as f:
-				temp = eval(f.read())
-				if 'network_mode' not in temp.keys():
-					temp['network_mode'] = 'bridge'
-				container = client.containers.run(temp['cmd'],detach=True, ports = temp['ports'],network_mode=temp['network_mode'])
+				config = eval(f.read())
+				config.pop("type")
+				config.pop("level")
+				config.pop("desc")
+				config['detach'] = True
+				#容器依赖其他容器时,先启动其他容器,然后link上去
+				#当前目录下应该有依赖容器的启动配置,目前只支持依赖一个容器
+				if "depends" in config.keys():
+					with open("vuln/" + q + "/" + config['depends'] + "/" + config['depends'] + ".json") as f:
+						depends_config = eval(f.read())
+					container = client.containers.run(**depends_config)
+					redis_conn = redis.Redis(host="127.0.0.1", port=6379)
+					redis_conn.psetex(session['name'] + q + "depends", 1000 * 61 * 60, container.id)
+					config['links'] = {container.name:config['depends']}
+					print(config['links'])
+					config.pop("depends")
+				container = client.containers.run(**config)
 				redis_conn = redis.Redis(host="127.0.0.1", port=6379)
 				redis_conn.psetex(session['name'] + q,1000*60*60,container.id)
 				container_remaintime = 60
@@ -120,15 +133,23 @@ def shutdown():
 		q = request.args.get('q', None)
 		redis_conn = redis.Redis(host="127.0.0.1", port=6379)
 		containerid = redis_conn.get(session['name'] + q)
+		dependscontainerid = redis_conn.get(session['name'] + q + "depends")
 		if containerid:
 			client.api.stop(containerid)
 			client.api.remove_container(containerid)
 			redis_conn = redis.Redis(host="127.0.0.1", port=6379)
-			redis_conn.delete(session['name'] + q)
+			redis_conn.delete(session['name'] + q )
+		if dependscontainerid:
+			client.api.stop(dependscontainerid)
+			client.api.remove_container(dependscontainerid)
+			redis_conn = redis.Redis(host="127.0.0.1", port=6379)
+			redis_conn.delete(session['name'] + q + "depends")
 		return redirect('/')
 	except Exception as e:
 		import traceback
 		traceback.print_exc()
+	finally:
+		return redirect('/')
 @app.route('/remaintime')
 def remaintime():
 	q = request.args.get('vulndir', None)

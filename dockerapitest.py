@@ -22,4 +22,10 @@ def execcontainer(containerid,cmd):
 	for i in client.api.exec_start(a,stream=True):
 		content = content + str(i)
 	return content
-print execcontainer()
+def startimagefromconfig():
+	with open("/Users/4nim4l/fddproject/vulndocker/vuln/xss1/mysql.json") as f:
+		depends_config = eval(f.read())
+	print depends_config
+	container = client.containers.run(**depends_config)
+	print container.name
+print startimagefromconfig()

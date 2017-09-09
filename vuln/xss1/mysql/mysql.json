@@ -1,0 +1,5 @@
+{
+  "image":"vuln/xss1_mysql",
+  "environment":{"MYSQL_ROOT_PASSWORD":"root"},
+  "detach":True,
+}
