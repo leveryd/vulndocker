@@ -4,4 +4,5 @@
     "type":"SQL注入",
     "level":"高",
     "ports":{"9091/tcp":""},
+    "depends":"mysql",
 }

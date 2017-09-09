@@ -20,6 +20,8 @@
 
 > 需要一个redis服务,密码是test@test123,在本地监听
 
+>
+
 > pkill -f u
 
 > ps -ef|grep uwsgi|grep -v grep|awk '{print $2}'|xargs kill -9

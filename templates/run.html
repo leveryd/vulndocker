@@ -21,7 +21,10 @@
 
 <p id="remaintime">{{container_remaintime}}分钟后漏洞环境关闭</p>
 
-服务地址:`{{ip}}:{{port[0]}}`
+服务地址:
+{% for item in port %}
+`{{ip}}:{{item}}`
+{% endfor %}
 
 [注销本环境](http://{{ip}}:{{webport}}/shutdown?q={{vulndir}})
 </xmp>
