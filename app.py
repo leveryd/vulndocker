@@ -70,13 +70,50 @@ def getport(containerid):
 	print(ports)
 	for key in ports.keys():
 		value = ports[key]
-		port.insert(0, value[0]['HostPort'].encode("utf-8"))
+		try:
+			port.insert(0, value[0]['HostPort'].encode("utf-8"))
+		except Exception:
+			import traceback
+			traceback.print_exc()
 	#通过docker没有找到开放的端口信息,可能是用了host模式,此时用代码写到的/temp/status文件读端口信息
 	#比如rmi服务中
 	if len(ports) == 0:
 		content = execcontainer(containerid,"cat /tmp/port")
 		port.insert(0,content.strip())
 	return port
+
+# 清理没必要的配置选项
+# 可变对象,和不可变对象
+def cleanconfig(config,q):
+	containerargslist = ["image","volumes","detach","ports","depends","network_mode","tty","environment"]
+	for key in config.keys():
+		if key not in containerargslist:
+			config.pop(key)
+	if 'detach' not in config.keys():
+		config['detach'] = True
+	# volumes支持相对路径的写法
+	if "volumes" in config.keys():
+		temp = {}
+		for key in config["volumes"]:
+			print config["volumes"]
+			newkey = key.replace("#CURRENT_DIR#", CURRENT_DIR + "/vuln/" + q)
+			temp[newkey] = config["volumes"][key]
+		config.pop("volumes")
+		config["volumes"] = temp
+	# 容器依赖其他容器时,先启动其他容器,然后link上去
+	# 当前目录下应该有依赖容器的启动配置,目前只支持依赖一个容器
+	if "depends" in config.keys():
+		with open("vuln/" + q + "/" + config['depends'] + "/" + config['depends'] + ".json") as f:
+			depends_config = eval(f.read())
+			cleanconfig(depends_config,q)
+		print depends_config
+		container = client.containers.run(**depends_config)
+		redis_conn = redis.Redis(host="127.0.0.1", port=6379)
+		print container,type(container)
+		redis_conn.psetex(session['name'] + q + "depends", 1000 * 61 * 60, container.id)
+		config['links'] = {container.name: config['depends']}
+		print(config['links'])
+		config.pop("depends")
 @app.route('/start',methods=['GET','POST'])
 def start():
 	args = {}
@@ -92,28 +129,7 @@ def start():
 		else:
 			with open("vuln/" + q + "/README.md", "r") as f:
 				config = eval(f.read())
-				config.pop("type")
-				config.pop("level")
-				config.pop("desc")
-				config['detach'] = True
-				if "volumes" in config.keys():
-					temp = {}
-					for key in config["volumes"]:
-						newkey = key.replace("#CURRENT_DIR#",CURRENT_DIR + "/vuln/" + q)
-						temp[newkey] = config["volumes"][key]
-					config.pop("volumes")
-					config["volumes"] = temp
-				#容器依赖其他容器时,先启动其他容器,然后link上去
-				#当前目录下应该有依赖容器的启动配置,目前只支持依赖一个容器
-				if "depends" in config.keys():
-					with open("vuln/" + q + "/" + config['depends'] + "/" + config['depends'] + ".json") as f:
-						depends_config = eval(f.read())
-					container = client.containers.run(**depends_config)
-					redis_conn = redis.Redis(host="127.0.0.1", port=6379)
-					redis_conn.psetex(session['name'] + q + "depends", 1000 * 61 * 60, container.id)
-					config['links'] = {container.name:config['depends']}
-					print(config['links'])
-					config.pop("depends")
+				cleanconfig(config,q)
 				container = client.containers.run(**config)
 				redis_conn = redis.Redis(host="127.0.0.1", port=6379)
 				redis_conn.psetex(session['name'] + q,1000*60*60,container.id)
