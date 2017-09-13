@@ -18,6 +18,10 @@
 --
 -- Table structure for table `user`
 --
+DROP DATABASE if exists test;
+CREATE DATABASE test DEFAULT CHARACTER SET utf8;
+
+use test;
 
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

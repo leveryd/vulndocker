@@ -3,7 +3,14 @@
 <body>
 <xmp theme="united" style="display:none;">
     漏洞靶场平台
+        本平台模拟一些真实的漏洞环境,目标是让测试漏洞变得更加简单.
 
+    一些说明
+        在线控制台: 相当于一个web界面的ssh
+        服务地址: 每一个漏洞环境中运行的服务会暴露出一个或者多个端口,通过ip:port访问对应的服务
+        注销本环境: 每一个漏洞环境启动后,会在一个小时候自动销毁.也可以主动销毁漏洞环境
+
+    有问题请钉钉@董光利
 </xmp>
 <script src="http://{{ip}}:{{webport}}/static/strapdown/strapdown.js"></script>
 
