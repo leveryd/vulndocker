@@ -6,3 +6,4 @@ Flask-Markdown
 ptyprocess==0.5.1
 tornado==4.1
 markdown
+uwsgi

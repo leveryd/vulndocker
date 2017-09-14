@@ -14,7 +14,7 @@
 
 ps:更多细节查阅参考资料
 
-环境源码下载:[vuln_mybatis.tar.gz](!http://{{ip}}:{{webport}}/vuln/mybatis_sqli/vuln_mybatis.tar.gz)
+环境源码下载:[vuln_mybatis.tar.gz](http://{{ip}}:{{webport}}/vuln/mybatis_sqli/vuln_mybatis.tar.gz)
 
 ### 漏洞利用
 下载sqlmap利用工具,利用sqlmap获得mysql所有的数据库名
@@ -27,4 +27,4 @@ python sqlmap.py --batch -u "http://{{ip}}:{{port[0]}}/getUserInfoOrder/name*" -
 ### 漏洞防御
     在编写mybatis的映射语句时，尽量采用“#{xxx}”这样的格式。若不得不使用“${xxx}”这样的参数，要手工地做好过滤工作，来防止sql注入攻击。
 ### 参考资料
-[审计mybatis的sql注入](!http://xdxd.love/2017/05/24/审计mybatis的sql注入new/)
+[审计mybatis的sql注入](http://xdxd.love/2017/05/24/审计mybatis的sql注入new/)

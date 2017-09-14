@@ -10,9 +10,9 @@ import redis
 import random
 from jinja2 import Template
 
-ip = "127.0.0.1"
-webport = 8888
-ttyport = 9999
+ip = "127.0.0.1"    #本机ip
+webport = 8888      #web端口
+ttyport = 9999      #在线docker端口
 CURRENT_DIR = os.getcwd()
 app = Flask(__name__)
 app.debug = 1
