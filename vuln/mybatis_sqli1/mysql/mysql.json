@@ -1,0 +1,5 @@
+{
+  "image":"vuln/mybatis1_mysql",
+  "environment":{"MYSQL_ROOT_PASSWORD":"root"},
+  "detach":True,
+}
