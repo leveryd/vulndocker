@@ -42,6 +42,11 @@ ttyport = 9999      #在线docker端口
 #启动
 uwsgi_python --socket 127.0.0.1:3031 --wsgi-file app.py --callable app --processes 4 --threads 2 --stats 127.0.0.1:9191 &
 
+#启动web页面的ssh
+#原项目:https://github.com/JetMuffin/dockertty
+cd dockertty/dockertty
+nohup python server.py -p 9999 &
+
 #添加计划任务
 */2 * * * * python /root/vulndocker/crontab.py
 ```

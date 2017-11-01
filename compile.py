@@ -1,5 +1,6 @@
 #coding:utf-8
 #编译靶场平台的docker镜像
+#todo:在ubuntu 14.04上运行有点问题,有两个镜像没有编译
 import os
 CURRENT_DIR = os.getcwd()
 
