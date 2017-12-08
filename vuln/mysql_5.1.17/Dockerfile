@@ -1,0 +1,3 @@
+FROM mysql:5.6.17
+
+EXPOSE 3306
