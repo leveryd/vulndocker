@@ -17,8 +17,14 @@ cd vulndocker
 apt-get install uwsgi-plugin-python docker.io nginx-core
 pip install -r requirements.txt
 cp nginx.conf /etc/nginx/sites-enabled/default
+
+#推荐使用[阿里云docker加速器](https://yq.aliyun.com/articles/29941)  (下载镜像更快)
+懒得创建用户可以使用我的镜像地址:
+https://l0fso5am.mirror.aliyuncs.com
+
 #编译项目中的所有镜像,耗时会比较长.特别是有些docker镜像访问国外源
 setsid python compile.py &
+
 ```
 
 参考
@@ -41,6 +47,11 @@ ttyport = 9999      #在线docker端口
 
 #启动
 uwsgi_python --socket 127.0.0.1:3031 --wsgi-file app.py --callable app --processes 4 --threads 2 --stats 127.0.0.1:9191 &
+
+#启动web页面的ssh
+#原项目:https://github.com/JetMuffin/dockertty
+cd dockertty/dockertty
+nohup python server.py -p 9999 &
 
 #添加计划任务
 */2 * * * * python /root/vulndocker/crontab.py
