@@ -50,7 +50,7 @@ cd vulndocker/
 
 #修改app.py中的ip和port
 ip = "127.0.0.1"    #本机ip
-webport = 3031      #web端口
+webport = 80      #web端口
 ttyport = 9999      #在线docker端口
 
 #启动
