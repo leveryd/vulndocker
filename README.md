@@ -13,6 +13,7 @@
 ## 安装
 
 ```
+#root用户
 cd vulndocker
 apt-get install uwsgi-plugin-python docker.io nginx-core
 pip install -r requirements.txt
@@ -31,6 +32,13 @@ setsid python compile.py &
 
 [uwsgi](http://uwsgi-docs-cn.readthedocs.io/zh_CN/latest/WSGIquickstart.html#web)
 
+## 调试
+
+```
+cd vulndocker/
+./run.sh
+```
+
 ## 运行
 
 ```
@@ -42,7 +50,7 @@ cd vulndocker/
 
 #修改app.py中的ip和port
 ip = "127.0.0.1"    #本机ip
-webport = 8888      #web端口
+webport = 3031      #web端口
 ttyport = 9999      #在线docker端口
 
 #启动
@@ -57,7 +65,7 @@ nohup python server.py -p 9999 &
 */2 * * * * python /root/vulndocker/crontab.py
 ```
 
-## 删除
+## 停止运行
 
 ```
 ps -ef|grep uwsgi|grep -v grep|awk '{print $2}'|xargs kill -9

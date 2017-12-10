@@ -1,0 +1,6 @@
+.idea/
+dump.rdb
+flask_session/
+dockertty/
+123
+.cached/

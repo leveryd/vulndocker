@@ -1,9 +1,10 @@
 redis
 flask
-docker==2.4.2
+docker
 Flask-Session
 Flask-Markdown
-ptyprocess==0.5.1
-tornado==4.1
+ptyprocess
+tornado
 markdown
 uwsgi
+jinja2
