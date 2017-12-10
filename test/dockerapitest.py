@@ -1,6 +1,6 @@
 import docker
 import os
-client = docker.from_env()
+client = docker.from_env(version="auto")
 
 
 def getimagelist():

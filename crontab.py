@@ -3,7 +3,7 @@ import docker
 import redis
 
 # 删除超时的容器
-client = docker.from_env()
+client = docker.from_env(version="auto")
 
 redis_conn = redis.Redis(host="127.0.0.1", port=6379)
 containers = []
